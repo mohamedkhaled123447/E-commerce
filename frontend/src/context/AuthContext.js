@@ -8,6 +8,8 @@ export const AuthProvider = ({ children }) => {
     const [AccessToken, setAccessToken] = useState(() => localStorage.getItem('AccessToken') ? localStorage.getItem('AccessToken') : null)
     const [RefreshToken, setRefreshToken] = useState(() => localStorage.getItem('RefreshToken') ? localStorage.getItem('RefreshToken') : null)
     const [User, setUser] = useState(() => localStorage.getItem('AccessToken') ? jwt_decode(localStorage.getItem('AccessToken')) : null)
+    const [error, setError] = useState('')
+
     const Login = async (e) => {
         e.preventDefault()
         const response = await fetch('http://localhost:8000/Accounts/api/token/', {
@@ -26,7 +28,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('RefreshToken', JSON.stringify(data.refresh))
             navigate('/')
         } else {
-            alert('Error')
+            setError('Invalid username or password')
         }
 
     }
@@ -57,14 +59,15 @@ export const AuthProvider = ({ children }) => {
         const interval = setInterval(() => {
             if (User)
                 UpdateToken()
-        }, 10000);
+        }, 14 * 1000 * 60);
         return () => clearInterval(interval);
 
     }, [User])
     const ContextData = {
         Login: Login,
         Logout: Logout,
-        User: User
+        User: User,
+        error: error
     }
     return (
         <AuthContext.Provider value={ContextData}>

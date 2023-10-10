@@ -179,7 +179,7 @@ JWT_SECRET_KEY = env("JWT_SECRET_KEY")
 
 REST_FRAMEWORK = {
     # "EXCEPTION_HANDLER": "tender.utils.drf_exception_handler",
-    "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",)
+    "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
 }
 
 CORS_ALLOWED_ORIGINS = [env("WEB_ROOT_URL"), "http://localhost:3000"]

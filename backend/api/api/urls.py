@@ -17,14 +17,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.urls import path,include
+from django.urls import path, include
 from django.views.debug import default_urlconf
 
 urlpatterns = (
     [
         path("admin/", admin.site.urls),
         path("", default_urlconf),
-        path('Accounts/',include('Accounts.urls')),
+        path("Accounts/", include("Accounts.urls")),
     ]
     + staticfiles_urlpatterns()
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

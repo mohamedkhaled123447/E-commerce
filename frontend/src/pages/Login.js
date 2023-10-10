@@ -1,16 +1,59 @@
-import React, { useContext } from 'react'
-import AuthContext from '../context/AuthContext'
-const Login = () => {
-    const { Login } = useContext(AuthContext)
-    return (
-        <div>
-            <form onSubmit={Login}>
-                <input type='text' name='username' placeholder='Enter username' />
-                <input type='password' name='password' placeholder='Enter password' />
-                <input type='submit' />
-            </form>
-        </div>
-    )
-}
+import React, { useContext } from 'react';
+import {
+    MDBInput,
+    MDBCol,
+    MDBRow,
+    MDBCheckbox,
+    MDBBtn,
+    MDBIcon,
+    MDBContainer
+} from 'mdb-react-ui-kit';
+import AuthContext from '../context/AuthContext';
 
-export default Login
+export default function App() {
+    const { Login, error } = useContext(AuthContext)
+    return (
+        <MDBContainer>
+            <form onSubmit={Login}>
+                <MDBInput className='mb-4' type='text' id='form2Example1' label='Username' name='username' />
+                <MDBInput className='mb-4' type='password' id='form2Example2' label='Password' name='password' />
+
+                <MDBRow className='mb-4'>
+                    <MDBCol className='d-flex justify-content-center'>
+                        <MDBCheckbox id='form2Example3' label='Remember me' defaultChecked />
+                    </MDBCol>
+                    <MDBCol>
+                        <a href='#!'>Forgot password?</a>
+                    </MDBCol>
+                </MDBRow>
+                <p>{error}</p>
+                <MDBBtn type='submit' className='mb-4' block>
+                    Sign in
+                </MDBBtn>
+
+                <div className='text-center'>
+                    <p>
+                        Not a member? <a href='/register'>Register</a>
+                    </p>
+                    <p>or sign up with:</p>
+
+                    <MDBBtn floating color="secondary" className='mx-1'>
+                        <MDBIcon fab icon='facebook-f' />
+                    </MDBBtn>
+
+                    <MDBBtn floating color="secondary" className='mx-1'>
+                        <MDBIcon fab icon='google' />
+                    </MDBBtn>
+
+                    <MDBBtn floating color="secondary" className='mx-1'>
+                        <MDBIcon fab icon='twitter' />
+                    </MDBBtn>
+
+                    <MDBBtn floating color="secondary" className='mx-1'>
+                        <MDBIcon fab icon='github' />
+                    </MDBBtn>
+                </div>
+            </form>
+        </MDBContainer>
+    );
+}

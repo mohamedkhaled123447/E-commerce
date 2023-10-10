@@ -1,6 +1,7 @@
 import './App.css';
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Register from './pages/Register'
 import Header from './components/Header'
 import PrivateRoute from './utils/PrivateRoute'
 import { AuthProvider } from './context/AuthContext'
@@ -16,6 +17,7 @@ function App() {
               <Route element={<Home />} path='/' exact />
             </Route>
             <Route element={<Login />} path='/login' />
+            <Route element={<Register />} path='/register' />
           </Routes>
         </AuthProvider>
       </BrowserRouter>
