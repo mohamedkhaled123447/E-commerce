@@ -6,7 +6,7 @@ COPY package-lock.json ./
 
 COPY package.json ./
 
-RUN npm install --prefer-offline --no-audit
+RUN npm install --prefer-offline --no-audit --force
 
 COPY entrypoint.sh /usr/local/bin/
 

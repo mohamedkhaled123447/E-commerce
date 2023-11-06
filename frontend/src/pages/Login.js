@@ -1,4 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { gapi } from 'gapi-script'
+import GoogleLoginButton from '../components/GoogleLoginButton';
 import {
     MDBInput,
     MDBCol,
@@ -9,9 +11,19 @@ import {
     MDBContainer
 } from 'mdb-react-ui-kit';
 import AuthContext from '../context/AuthContext';
-
+const clientId = "522256695532-lu3rvkar7si1vi0pc2vr32h4mpc4iise.apps.googleusercontent.com"
 export default function App() {
     const { Login, error } = useContext(AuthContext)
+    const [click, setClick] = useState(false)
+    useEffect(() => {
+        function start() {
+            gapi.client.init({
+                clientId: clientId,
+                scope: ""
+            })
+        }
+        gapi.load("client:auth2", start)
+    }, [])
     return (
         <MDBContainer>
             <form onSubmit={Login}>
@@ -30,7 +42,9 @@ export default function App() {
                 <MDBBtn type='submit' className='mb-4' block>
                     Sign in
                 </MDBBtn>
-
+                <MDBBtn onClick={() => setClick(true)}>
+                    <GoogleLoginButton click={click} setClick={setClick} />
+                </MDBBtn>
                 <div className='text-center'>
                     <p>
                         Not a member? <a href='/register'>Register</a>

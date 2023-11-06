@@ -11,14 +11,25 @@ export const AuthProvider = ({ children }) => {
     const [error, setError] = useState('')
 
     const Login = async (e) => {
-        e.preventDefault()
-        const response = await fetch('http://localhost:8000/Accounts/api/token/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 'username': e.target.username.value, 'password': e.target.password.value })
-        })
+        let response = null
+        if (e.type === "submit") {
+            e.preventDefault()
+            response = await fetch('http://localhost:8000/Accounts/api/token/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'username': e.target.username.value, 'password': e.target.password.value })
+            })
+        } else {
+            response = await fetch('http://localhost:8000/Accounts/api/token/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'username': e.profileObj.givenName, 'password': '123456789' })
+            })
+        }
         const data = await response.json()
         if (response.status === 200) {
             setAccessToken(data.access)
@@ -28,7 +39,24 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('RefreshToken', JSON.stringify(data.refresh))
             navigate('/')
         } else {
-            setError('Invalid username or password')
+            if (e.type === "submit") {
+                setError('Invalid username or password')
+            } else {
+                const response = await fetch('http://localhost:8000/Accounts/register/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 'username': e.profileObj.givenName, 'email': e.profileObj.email, 'password': "123456789" })
+                })
+                const data = await response.json()
+                if (response.status === 200) {
+                    console.log("first")
+                    Login(e)
+                } else {
+                    setError('Error')
+                }
+            }
         }
 
     }
@@ -59,7 +87,7 @@ export const AuthProvider = ({ children }) => {
         const interval = setInterval(() => {
             if (User)
                 UpdateToken()
-        }, 14 * 1000 * 60);
+        }, 4 * 1000 * 60);
         return () => clearInterval(interval);
 
     }, [User])
