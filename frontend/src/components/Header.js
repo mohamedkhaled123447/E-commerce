@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import AuthContext from '../context/AuthContext';
 import {
@@ -9,17 +9,25 @@ import {
   MDBBtn
 } from 'mdb-react-ui-kit';
 
-export default function Header() {
+export default function Header({ GetProducts, query, setQuery }) {
   const navigate = useNavigate()
   const { User, Logout } = useContext(AuthContext)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    GetProducts(query, '', 0)
+  }
   return (
     <MDBNavbar light bgColor='light' className='mb-4'>
       <MDBContainer fluid>
-        <MDBNavbarBrand>Navbar</MDBNavbarBrand>
-        <MDBInputGroup tag="form" className='d-flex w-auto'>
-          <input className='form-control' placeholder="Type query" aria-label="Search" type='Search' />
-          <MDBBtn outline>Search</MDBBtn>
-        </MDBInputGroup>
+        <a
+          className='navbar-brand'
+          href='/'
+          style={{ fontFamily: 'fantasy', fontSize: '1.5rem' }}
+        >E-commerce</a>
+        <form onSubmit={handleSubmit} className='d-flex w-auto'>
+          <input className='form-control' placeholder="Type query" aria-label="Search" type='Search' value={query} onChange={(e) => setQuery(e.target.value)} />
+          <MDBBtn type='submit' outline>Search</MDBBtn>
+        </form>
         {!User && (
           <div>
             <MDBBtn onClick={() => navigate('/login')}>Login</MDBBtn>

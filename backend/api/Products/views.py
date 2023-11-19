@@ -22,8 +22,16 @@ class AllProducts(ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductsSerializer
 
+    def get_queryset(self):
+        name = self.request.query_params.get("name", None)
+        price = self.request.query_params.get("price", None)
+        categroy = self.request.query_params.get("categroy", None)
+        querySet = Product.objects.all()
+        if name is not None:
+            querySet = querySet.filter(name__startswith=name)
+        if price is not None:
+            querySet = querySet.filter(price__gte=price)
+        if categroy is not None:
+            querySet = querySet.filter(categroy=categroy)
+        return querySet
 
-class Create(APIView):
-    def post(self, request):
-        print(request.data)
-        return Response("a7a")

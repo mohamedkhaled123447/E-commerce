@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "Accounts",
     "Products",
     "rest_framework_simplejwt",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -181,6 +182,7 @@ JWT_SECRET_KEY = env("JWT_SECRET_KEY")
 REST_FRAMEWORK = {
     # "EXCEPTION_HANDLER": "tender.utils.drf_exception_handler",
     "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
 
 CORS_ALLOWED_ORIGINS = [env("WEB_ROOT_URL"), "http://localhost:3000"]
