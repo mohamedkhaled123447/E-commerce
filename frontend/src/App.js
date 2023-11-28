@@ -8,9 +8,11 @@ import PrivateRoute from './utils/PrivateRoute'
 import AuthContext from './context/AuthContext';
 import { Route, Routes } from 'react-router-dom'
 import { useEffect, useState, useContext } from 'react';
-
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   const [Products, setProducts] = useState([])
+  const [CartProducts, setCartProducts] = useState([])
   const [query, setQuery] = useState('')
   const { Logout } = useContext(AuthContext)
   useEffect(() => {
@@ -33,15 +35,18 @@ function App() {
   }
   return (
     <div className="App">
-      <Header GetProducts={GetProducts} query={query} setQuery={setQuery}/>
+      <Header GetProducts={GetProducts} query={query} setQuery={setQuery} CartProducts={CartProducts} setCartProducts={setCartProducts} />
       <Routes>
         <Route element={<PrivateRoute />}>
-          <Route element={<AddProduct />} path='/addproduct' />
+          <Route element={<AddProduct setProducts={setProducts} />} path='/addproduct' />
         </Route>
-        <Route element={<LandingPage Products={Products} GetProducts={GetProducts} query={query}/>} path='/' />
+        <Route element={<LandingPage Products={Products} GetProducts={GetProducts} query={query}
+          setCartProducts={setCartProducts} CartProducts={CartProducts}
+        />} path='/' />
         <Route element={<Login />} path='/login' />
         <Route element={<Register />} path='/register' />
       </Routes>
+      <ToastContainer autoClose={1000} />
     </div>
   );
 }

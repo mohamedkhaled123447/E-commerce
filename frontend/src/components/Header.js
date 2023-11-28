@@ -1,15 +1,16 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
+import Cart from './Cart';
 import AuthContext from '../context/AuthContext';
+import GoogleLogoutButton from './GoogleLogoutButton'
 import {
   MDBContainer,
   MDBNavbar,
-  MDBInputGroup,
-  MDBNavbarBrand,
+  MDBIcon,
   MDBBtn
 } from 'mdb-react-ui-kit';
 
-export default function Header({ GetProducts, query, setQuery }) {
+export default function Header({ GetProducts, query, setQuery, CartProducts, setCartProducts }) {
   const navigate = useNavigate()
   const { User, Logout } = useContext(AuthContext)
   const handleSubmit = (e) => {
@@ -35,9 +36,13 @@ export default function Header({ GetProducts, query, setQuery }) {
           </div>
         )}
         {User && (
-          <div>
-            <span>Welcom {User.name}</span>
-            <MDBBtn className="ms-2" onClick={() => Logout()}>Logout</MDBBtn>
+          <div className='d-flex flex-row mb-3 align-items-center'>
+            <span className='me-3'>Welcom {User.name}</span>
+            <GoogleLogoutButton/>
+            <Cart
+              CartProducts={CartProducts}
+              setCartProducts={setCartProducts}
+            />
           </div>
         )}
       </MDBContainer>

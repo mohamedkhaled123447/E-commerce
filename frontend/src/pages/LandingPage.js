@@ -3,7 +3,7 @@ import FilterSection from '../components/FilterSection';
 import ProductCard from '../components/ProductCard'
 import ReactPaginate from 'react-paginate'
 import { useState } from 'react';
-function LandingPage({ Products, GetProducts, query }) {
+function LandingPage({ Products, GetProducts, query, CartProducts, setCartProducts }) {
     const [itemOffset, setItemOffset] = useState(0);
     const itemsPerPage = 4;
     const endOffset = itemOffset + itemsPerPage;
@@ -29,7 +29,7 @@ function LandingPage({ Products, GetProducts, query }) {
                 <MDBRow className='g-3'>
                     {currentItems.map(product => (
                         <div className="col-md-4" key={product.id}>
-                            <ProductCard product={product} />
+                            <ProductCard product={product} CartProducts={CartProducts} setCartProducts={setCartProducts} />
                         </div>
                     ))}
                 </MDBRow>
@@ -52,13 +52,6 @@ function LandingPage({ Products, GetProducts, query }) {
             </MDBContainer>
         </>
     );
-    // return (
-    //     <>
-    //         <MDBContainer className="text-center mt-5">
-
-    //         </MDBContainer>
-    //     </>
-    // );
 }
 
 export default LandingPage;

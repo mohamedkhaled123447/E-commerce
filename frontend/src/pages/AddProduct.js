@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import { MDBInput, MDBBtn, MDBContainer, MDBSpinner, MDBRow } from 'mdb-react-ui-kit';
 
-function AddProduct() {
+function AddProduct({ setProducts }) {
     const navigate = useNavigate();
     const { User } = useContext(AuthContext)
     const [name, setName] = useState('');
@@ -34,6 +34,7 @@ function AddProduct() {
         });
         const data = await response.json();
         if (response.status == 201) {
+            setProducts((pre) => [...pre, data])
             setLoading(false)
             navigate("/")
         }

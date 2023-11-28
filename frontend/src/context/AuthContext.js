@@ -51,7 +51,6 @@ export const AuthProvider = ({ children }) => {
                 })
                 const data = await response.json()
                 if (response.status === 200) {
-                    console.log("first")
                     Login(e)
                 } else {
                     setError('Error')

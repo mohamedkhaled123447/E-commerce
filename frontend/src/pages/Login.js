@@ -14,7 +14,6 @@ import AuthContext from '../context/AuthContext';
 const clientId = "522256695532-lu3rvkar7si1vi0pc2vr32h4mpc4iise.apps.googleusercontent.com"
 export default function App() {
     const { Login, error } = useContext(AuthContext)
-    const [click, setClick] = useState(false)
     useEffect(() => {
         function start() {
             gapi.client.init({
@@ -42,9 +41,9 @@ export default function App() {
                 <MDBBtn type='submit' className='mb-4' block>
                     Sign in
                 </MDBBtn>
-                <MDBBtn onClick={() => setClick(true)}>
-                    <GoogleLoginButton click={click} setClick={setClick} />
-                </MDBBtn>
+                <div className='text-center m-4'>
+                <GoogleLoginButton />
+                </div>
                 <div className='text-center'>
                     <p>
                         Not a member? <a href='/register'>Register</a>

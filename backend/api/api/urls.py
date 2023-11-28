@@ -23,9 +23,13 @@ from django.views.debug import default_urlconf
 urlpatterns = (
     [
         path("admin/", admin.site.urls),
+        # django rest framwork authentication
+        path("api-auth/", include("rest_framework.urls")),
         path("", default_urlconf),
         path("Accounts/", include("Accounts.urls")),
         path("Products/", include("Products.urls")),
+        path("Cart/", include("Cart.urls")),
+        path("Order/", include("Order.urls")),
     ]
     + staticfiles_urlpatterns()
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
