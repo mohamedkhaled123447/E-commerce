@@ -1,12 +1,11 @@
-from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import User
 from .serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from .tasks import SendEmail
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -15,10 +14,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
 
         # Add custom claims
-        token["name"] = user.username
-        token["id"] = user.id
-        # ...
-
+        token["user"] = UserSerializer(user).data
         return token
 
 
@@ -38,9 +34,11 @@ class Home(APIView):
 
 class RegisterUser(APIView):
     permission_classes = [AllowAny]
-    def post(self,request,*arg,**kwargs):
+
+    def post(self, request, *arg, **kwargs):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            SendEmail.delay()
             return Response(serializer.data)
         return Response(serializer.errors)

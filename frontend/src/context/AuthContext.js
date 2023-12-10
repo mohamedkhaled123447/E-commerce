@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
         if (response.status === 200) {
             setAccessToken(data.access)
             setRefreshToken(data.refresh)
-            setUser(jwt_decode(data.access))
+            setUser(jwt_decode(data.access).user)
             localStorage.setItem('AccessToken', JSON.stringify(data.access))
             localStorage.setItem('RefreshToken', JSON.stringify(data.refresh))
             navigate('/')
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
         const data = await response.json()
         if (response.status === 200) {
             setAccessToken(data.access)
-            setUser(jwt_decode(data.access))
+            setUser(jwt_decode(data.access).user)
             localStorage.setItem('AccessToken', JSON.stringify(data.access))
         } else {
             Logout()

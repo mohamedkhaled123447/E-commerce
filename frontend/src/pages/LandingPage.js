@@ -2,7 +2,7 @@ import { MDBContainer, MDBRow, MDBCol, MDBBtn } from 'mdb-react-ui-kit';
 import FilterSection from '../components/FilterSection';
 import ProductCard from '../components/ProductCard'
 import ReactPaginate from 'react-paginate'
-import { useState } from 'react';
+import { useState} from 'react';
 function LandingPage({ Products, GetProducts, query, CartProducts, setCartProducts }) {
     const [itemOffset, setItemOffset] = useState(0);
     const itemsPerPage = 4;
@@ -13,7 +13,6 @@ function LandingPage({ Products, GetProducts, query, CartProducts, setCartProduc
         const newOffset = (event.selected * itemsPerPage) % Products.length;
         setItemOffset(newOffset);
     };
-
     return (
         <>
             <MDBContainer className="text-center mt-5">
