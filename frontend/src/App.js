@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import AddProduct from './pages/AddProduct';
 import Register from './pages/Register'
 import Header from './components/Header'
+import Profile from './pages/Profile'
 import PrivateRoute from './utils/PrivateRoute'
 import AuthContext from './context/AuthContext';
 import { Route, Routes } from 'react-router-dom'
@@ -39,6 +40,9 @@ function App() {
       <Routes>
         <Route element={<PrivateRoute />}>
           <Route element={<AddProduct setProducts={setProducts} />} path='/addproduct' />
+        </Route>
+        <Route element={<PrivateRoute />}>
+          <Route element={<Profile/>} path='/profile' />
         </Route>
         <Route element={<LandingPage Products={Products} GetProducts={GetProducts} query={query}
           setCartProducts={setCartProducts} CartProducts={CartProducts}

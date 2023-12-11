@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const [AccessToken, setAccessToken] = useState(() => localStorage.getItem('AccessToken') ? localStorage.getItem('AccessToken') : null)
     const [RefreshToken, setRefreshToken] = useState(() => localStorage.getItem('RefreshToken') ? localStorage.getItem('RefreshToken') : null)
-    const [User, setUser] = useState(() => localStorage.getItem('AccessToken') ? jwt_decode(localStorage.getItem('AccessToken')) : null)
+    const [User, setUser] = useState(() => localStorage.getItem('AccessToken') ? jwt_decode(localStorage.getItem('AccessToken')).user : null)
     const [error, setError] = useState('')
 
     const Login = async (e) => {

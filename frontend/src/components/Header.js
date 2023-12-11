@@ -37,8 +37,9 @@ export default function Header({ GetProducts, query, setQuery, CartProducts, set
         )}
         {User && (
           <div className='d-flex flex-row mb-3 align-items-center'>
-            <span className='me-3'>Welcom {User.name}</span>
-            <GoogleLogoutButton/>
+            <span className='me-3'>Welcom </span>
+            <a className='me-4' href='http://localhost:3001/profile'>{User.username}</a>
+            <GoogleLogoutButton />
             <Cart
               CartProducts={CartProducts}
               setCartProducts={setCartProducts}

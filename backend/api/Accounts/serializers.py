@@ -5,11 +5,11 @@ from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ["id", "username", "email", "password"]
+        fields = ["id", "username", "password", "email", "role", "verified", "image", "address", "phone"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
@@ -17,3 +17,8 @@ class UserSerializer(serializers.ModelSerializer):
             username=validated_data["username"], email=validated_data["email"], password=validated_data["password"]
         )
         return user
+
+    def get_image(self, obj):
+        if obj.image:
+            return f"http://localhost:8000{obj.image.url}"
+        return None
