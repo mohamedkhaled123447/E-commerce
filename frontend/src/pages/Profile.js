@@ -18,9 +18,10 @@ import {
   MDBListGroupItem
 } from 'mdb-react-ui-kit';
 
-export default function ProfilePage() {
+export default function ProfilePage({ Products }) {
   const { User } = useContext(AuthContext)
   const [orders, setOrders] = useState([])
+  const UserProducts = Products.filter((product) => product.seller === User.id)
   useEffect(() => {
     GetOrders()
   }, [])
@@ -42,52 +43,68 @@ export default function ProfilePage() {
     <section >
       <MDBContainer className="py-5">
         <MDBRow>
-          <MDBCol lg="4">
-            <MDBCard className="mb-4">
-              <MDBCardBody className="text-center">
-                <MDBCardImage
-                  src={User.image}
-                  alt="avatar"
-                  className="rounded-circle"
-                  style={{ width: '150px', height: '150px' }}
-                  fluid />
-                <p className="text-muted mb-1">Full Stack Developer</p>
-                <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
-                <div className="d-flex justify-content-center mb-2">
-                  <MDBBtn>Follow</MDBBtn>
-                  <MDBBtn outline className="ms-1">Message</MDBBtn>
-                </div>
-              </MDBCardBody>
-            </MDBCard>
-
-            <MDBCard className="mb-4 mb-lg-0">
-              <MDBCardBody className="p-0">
-                <MDBListGroup flush className="rounded-3">
-                  <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
-                    <MDBIcon fas icon="globe fa-lg text-warning" />
-                    <MDBCardText>https://mdbootstrap.com</MDBCardText>
-                  </MDBListGroupItem>
-                  <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
-                    <MDBIcon fab icon="github fa-lg" style={{ color: '#333333' }} />
-                    <MDBCardText>mdbootstrap</MDBCardText>
-                  </MDBListGroupItem>
-                  <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
-                    <MDBIcon fab icon="twitter fa-lg" style={{ color: '#55acee' }} />
-                    <MDBCardText>@mdbootstrap</MDBCardText>
-                  </MDBListGroupItem>
-                  <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
-                    <MDBIcon fab icon="instagram fa-lg" style={{ color: '#ac2bac' }} />
-                    <MDBCardText>mdbootstrap</MDBCardText>
-                  </MDBListGroupItem>
-                  <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
-                    <MDBIcon fab icon="facebook fa-lg" style={{ color: '#3b5998' }} />
-                    <MDBCardText>mdbootstrap</MDBCardText>
-                  </MDBListGroupItem>
-                </MDBListGroup>
-              </MDBCardBody>
-            </MDBCard>
+          <MDBCol lg="6">
+            <MDBRow>
+              <MDBCard className="mb-4">
+                <MDBCardBody className="text-center">
+                  <MDBCardImage
+                    src={User.image}
+                    alt="avatar"
+                    className="rounded-circle"
+                    style={{ width: '150px', height: '150px' }}
+                    fluid />
+                  <p className="text-muted mb-1">Full Stack Developer</p>
+                  <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                  <div className="d-flex justify-content-center mb-2">
+                    <MDBBtn>Follow</MDBBtn>
+                    <MDBBtn outline className="ms-1">Message</MDBBtn>
+                  </div>
+                </MDBCardBody>
+              </MDBCard>
+            </MDBRow>
+            <h1>Products</h1>
+            <MDBRow>
+              <MDBCard>
+                <MDBCardBody className="text-center">
+                  <MDBTable align='middle'>
+                    <MDBTableHead>
+                      <tr>
+                        <th scope='col'>Name</th>
+                        <th scope='col'>price</th>
+                        <th scope='col'>description</th>
+                      </tr>
+                    </MDBTableHead>
+                    <MDBTableBody>
+                      {UserProducts.map((product) => (
+                        <tr key={product.id}>
+                          <td>
+                            <div className='d-flex align-items-center'>
+                              <img
+                                src={product.image}
+                                alt=''
+                                style={{ width: '45px', height: '45px' }}
+                                className='rounded-circle'
+                              />
+                              <div className='ms-3'>
+                                <p className='fw-bold mb-1'>{product.name}</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <p className='text-muted mb-0'>{product.price}</p>
+                          </td>
+                          <td>
+                            <p className='text-muted mb-0'>{product.description}</p>
+                          </td>
+                        </tr>
+                      ))}
+                    </MDBTableBody>
+                  </MDBTable>
+                </MDBCardBody>
+              </MDBCard>
+            </MDBRow>
           </MDBCol>
-          <MDBCol lg="8">
+          <MDBCol lg="6">
             <MDBCard className="mb-4">
               <MDBCardBody>
                 <MDBRow>
@@ -139,45 +156,47 @@ export default function ProfilePage() {
 
             <MDBRow>
               <h1>Orders</h1>
-              <MDBRow>
+              <MDBRow className='ms-1'>
                 <MDBCard>
-                  <MDBTable align='middle'>
-                    <MDBTableHead>
-                      <tr>
-                        <th scope='col'>Name</th>
-                        <th scope='col'>total_price</th>
-                        <th scope='col'>Status</th>
-                      </tr>
-                    </MDBTableHead>
-                    <MDBTableBody>
-                      {orders.map((order) => (
-                        <tr key={order.id}>
-                          <td>
-                            <div className='d-flex align-items-center'>
-                              <img
-                                src={User.image}
-                                alt=''
-                                style={{ width: '45px', height: '45px' }}
-                                className='rounded-circle'
-                              />
-                              <div className='ms-3'>
-                                <p className='fw-bold mb-1'>{User.username}</p>
-                                <p className='text-muted mb-0'>{User.email}</p>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <p className='text-muted mb-0'>{order.total_price}</p>
-                          </td>
-                          <td>
-                            <MDBBadge color='success' pill>
-                              {order.status}
-                            </MDBBadge>
-                          </td>
+                  <MDBCardBody className="text-center">
+                    <MDBTable align='middle'>
+                      <MDBTableHead>
+                        <tr>
+                          <th scope='col'>Name</th>
+                          <th scope='col'>total_price</th>
+                          <th scope='col'>Status</th>
                         </tr>
-                      ))}
-                    </MDBTableBody>
-                  </MDBTable>
+                      </MDBTableHead>
+                      <MDBTableBody>
+                        {orders.map((order) => (
+                          <tr key={order.id}>
+                            <td>
+                              <div className='d-flex align-items-center'>
+                                <img
+                                  src={User.image}
+                                  alt=''
+                                  style={{ width: '45px', height: '45px' }}
+                                  className='rounded-circle'
+                                />
+                                <div className='ms-3'>
+                                  <p className='fw-bold mb-1'>{User.username}</p>
+                                  <p className='text-muted mb-0'>{User.email}</p>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <p className='text-muted mb-0'>{order.total_price}</p>
+                            </td>
+                            <td>
+                              <MDBBadge color='success' pill>
+                                {order.status}
+                              </MDBBadge>
+                            </td>
+                          </tr>
+                        ))}
+                      </MDBTableBody>
+                    </MDBTable>
+                  </MDBCardBody>
                 </MDBCard>
               </MDBRow>
             </MDBRow>

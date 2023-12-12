@@ -42,7 +42,7 @@ function App() {
           <Route element={<AddProduct setProducts={setProducts} />} path='/addproduct' />
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route element={<Profile/>} path='/profile' />
+          <Route element={<Profile Products={Products}/>} path='/profile' />
         </Route>
         <Route element={<LandingPage Products={Products} GetProducts={GetProducts} query={query}
           setCartProducts={setCartProducts} CartProducts={CartProducts}
