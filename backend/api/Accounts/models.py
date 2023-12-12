@@ -26,5 +26,3 @@ def delete_product_image(sender, instance, **kwargs):
         if os.path.exists(image_path):
             os.remove(image_path)
 
-
-pre_delete.connect(delete_product_image, sender=User)
