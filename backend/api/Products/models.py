@@ -1,8 +1,5 @@
 from django.db import models
 from Accounts.models import User
-from django.db.models.signals import pre_delete
-from django.dispatch import receiver
-import os
 
 
 # Create your models here.
@@ -18,11 +15,3 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
-
-@receiver(pre_delete, sender=Product)
-def delete_product_image(sender, instance, **kwargs):
-    if instance.image:
-        image_path = instance.image.path
-        if os.path.exists(image_path):
-            os.remove(image_path)
