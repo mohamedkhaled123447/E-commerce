@@ -5,6 +5,7 @@ import AddProduct from './pages/AddProduct';
 import Register from './pages/Register'
 import Header from './components/Header'
 import Profile from './pages/Profile'
+import Payment from './pages/Payment';
 import PrivateRoute from './utils/PrivateRoute'
 import AuthContext from './context/AuthContext';
 import { Route, Routes } from 'react-router-dom'
@@ -39,10 +40,13 @@ function App() {
       <Header GetProducts={GetProducts} query={query} setQuery={setQuery} CartProducts={CartProducts} setCartProducts={setCartProducts} />
       <Routes>
         <Route element={<PrivateRoute />}>
+          <Route element={<Payment CartProducts={CartProducts} setCartProducts={setCartProducts} />} path='/payment' />
+        </Route>
+        <Route element={<PrivateRoute />}>
           <Route element={<AddProduct setProducts={setProducts} />} path='/addproduct' />
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route element={<Profile Products={Products}/>} path='/profile' />
+          <Route element={<Profile Products={Products} />} path='/profile' />
         </Route>
         <Route element={<LandingPage Products={Products} GetProducts={GetProducts} query={query}
           setCartProducts={setCartProducts} CartProducts={CartProducts}

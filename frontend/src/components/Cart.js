@@ -38,30 +38,6 @@ export default function Cart({ CartProducts, setCartProducts }) {
 
         }
     }
-    const MakeOrder = async () => {
-        if (CartProducts.length === 0) {
-            toast.error("Cart is empty !", {
-                position: toast.POSITION.TOP_CENTER
-            });
-            return
-        }
-        const total_price = CartProducts.reduce((total, product) => total + product.quantity * product.product.price, 0)
-        const response = await fetch('http://localhost:8000/Order/create/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${JSON.parse(localStorage.getItem('AccessToken'))}`
-            },
-            body: JSON.stringify({ 'user': User.id, 'status': 'pending', 'total_price': total_price })
-        })
-        const data = await response.json();
-        if (response.status === 201) {
-            console.log(data)
-        } else if (response.statusText === 'Unauthorized') {
-            Logout()
-
-        }
-    }
     return (
         <>
             <MDBIcon fas icon="shopping-cart" size='2x' className="ms-2" onClick={toggleOpen} />
@@ -96,7 +72,7 @@ export default function Cart({ CartProducts, setCartProducts }) {
                             <MDBBtn outline color='info' onClick={toggleOpen}>
                                 Close
                             </MDBBtn>
-                            <MDBBtn outline color='info' onClick={MakeOrder}>
+                            <MDBBtn outline color='info' href='/payment/'>
                                 make order
                             </MDBBtn>
                         </MDBModalFooter>
