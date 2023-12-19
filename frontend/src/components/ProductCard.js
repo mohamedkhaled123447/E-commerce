@@ -1,9 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { MDBCard, MDBCardImage, MDBCardBody, MDBCardTitle, MDBCardText, MDBBtn } from 'mdb-react-ui-kit';
+import { Rating } from 'react-simple-star-rating'
 import AuthContext from '../context/AuthContext';
-import { toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 function ProductCard({ product, CartProducts, setCartProducts }) {
     const { User, Logout } = useContext(AuthContext)
+    const [rating, setRating] = useState(0)
+    const temp = 4
+    useEffect(() => {
+        GetRatings()
+    }, [])
+    const GetRatings = async () => {
+        const response = await fetch(`http://localhost:8000/Products/ratings/?product=${product.id}`, {
+            method: 'GET',
+        })
+        const data = await response.json()
+        if (response.status === 200) {
+            const sum = data.reduce((a, b) => a + b.value, 0)
+            setRating(sum / data.length)
+        }
+
+    }
     const AddToCart = async () => {
         const foundElement = CartProducts.find((element) => element.product.id === product.id);
         if (foundElement) {
@@ -37,9 +54,23 @@ function ProductCard({ product, CartProducts, setCartProducts }) {
         }
 
     }
+    const handleRating = async (rate) => {
+        const response = await fetch('http://localhost:8000/Products/ratings/create/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${JSON.parse(localStorage.getItem('AccessToken'))}`
+            },
+            body: JSON.stringify({ 'product': product.id, 'user': User.id, 'value': rate })
+        })
+        const data = await response.json()
+        if (response.status === 201) {
+            setRating(rate)
+        }
+    }
     return (
-        <MDBCard style={{ maxWidth: '22rem' }}>
-            <MDBCardImage src={product.image} alt={product.name} position='top' style={{ maxHeight: '200px' }} />
+        <MDBCard style={{ maxWidth: '22rem', minWidth: "200px" }}>
+            <MDBCardImage src={product.image} alt={product.name} position='top' style={{ height: "150px" }} />
             <MDBCardBody>
                 <MDBCardTitle>{product.name}</MDBCardTitle>
                 <MDBCardText>
@@ -47,6 +78,9 @@ function ProductCard({ product, CartProducts, setCartProducts }) {
                 </MDBCardText>
                 <MDBCardText>
                     Price: ${product.price}
+                </MDBCardText>
+                <MDBCardText >
+                    <Rating onClick={handleRating} initialValue={rating} />
                 </MDBCardText>
                 <MDBBtn onClick={AddToCart}>Add to Cart</MDBBtn>
             </MDBCardBody>

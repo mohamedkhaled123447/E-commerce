@@ -45,48 +45,45 @@ function FilterSection({ GetProducts, query }) {
   return (
     <MDBContainer className="mt-3">
       <MDBRow>
-        <MDBCol md="6">
-          <p>Category</p>
-          <MDBCheckbox
-            label="10"
-            value={10}
-            checked={checked & (1 << 0)}
-            onChange={handleCategoryChange}
-          />
-          <MDBCheckbox
-            label="20"
-            value={20}
-            checked={checked & (1 << 1)}
-            onChange={handleCategoryChange}
-          />
-          <MDBCheckbox
-            label="30"
-            value={30}
-            checked={checked & (1 << 2)}
-            onChange={handleCategoryChange}
-          />
-          <MDBCheckbox
-            label="40"
-            value={40}
-            checked={checked & (1 << 3)}
-            onChange={handleCategoryChange}
-          />
-        </MDBCol>
+        <p>Price</p>
+        <MDBCheckbox
+          label="10"
+          value={10}
+          checked={checked & (1 << 0)}
+          onChange={handleCategoryChange}
+        />
+        <MDBCheckbox
+          label="20"
+          value={20}
+          checked={checked & (1 << 1)}
+          onChange={handleCategoryChange}
+        />
+        <MDBCheckbox
+          label="30"
+          value={30}
+          checked={checked & (1 << 2)}
+          onChange={handleCategoryChange}
+        />
+        <MDBCheckbox
+          label="40"
+          value={40}
+          checked={checked & (1 << 3)}
+          onChange={handleCategoryChange}
+        />
       </MDBRow>
       <MDBRow className="mt-3">
-        <MDBCol md="12">
-          <MDBBtn color="primary" onClick={handleApply}>
-            Apply
-          </MDBBtn>
-          <MDBBtn
-            color="secondary"
-            onClick={() => {
-              setChecked(0)
-            }}
-          >
-            Clear
-          </MDBBtn>
-        </MDBCol>
+        <MDBBtn className="w-50" color="primary" onClick={handleApply}>
+          Apply
+        </MDBBtn>
+        <MDBBtn
+          className="w-50"
+          color="secondary"
+          onClick={() => {
+            setChecked(0)
+          }}
+        >
+          Clear
+        </MDBBtn>
       </MDBRow>
     </MDBContainer>
   );

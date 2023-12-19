@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from .models import Product
+from .models import Product, Rating
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework.views import APIView
-from .serializers import ProductsSerializer
+from .serializers import ProductsSerializer, RatingSerializer
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 
@@ -35,3 +36,37 @@ class AllProducts(ListAPIView):
             querySet = querySet.filter(categroy=categroy)
         return querySet
 
+
+class CreateRating(ListCreateAPIView):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        rating = Rating.objects.filter(product=data["product"], user=data["user"])
+        if rating.exists():
+            rating = rating.first()
+            rating.value = data["value"]
+            rating.save()
+            serializer = self.get_serializer(rating)
+            return Response(serializer.data)
+        else:
+            return super().create(request, *args, **kwargs)
+
+
+class RetrieveUpdateDestroyRating(RetrieveUpdateDestroyAPIView):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializer
+
+
+class AllRatings(ListAPIView):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializer
+
+    def get_queryset(self):
+        product = self.request.query_params.get("product", None)
+        querySet = Rating.objects.all()
+        if product is not None:
+            querySet = querySet.filter(product=product)
+        return querySet
