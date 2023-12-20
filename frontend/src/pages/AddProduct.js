@@ -6,7 +6,7 @@ import { MDBInput, MDBBtn, MDBContainer, MDBSpinner, MDBRow } from 'mdb-react-ui
 
 function AddProduct({ setProducts }) {
     const navigate = useNavigate();
-    const { User } = useContext(AuthContext)
+    const { User ,api_host} = useContext(AuthContext)
     const [name, setName] = useState('');
     const [Loading, setLoading] = useState(false);
     const [description, setDescription] = useState('');
@@ -28,7 +28,7 @@ function AddProduct({ setProducts }) {
         formData.append('stock_quantity', parseInt(stock_quantity));
         formData.append('image', file);
 
-        const response = await fetch('http://localhost:8000/Products/create/', {
+        const response = await fetch(`${api_host}/Products/create/`, {
             method: 'POST',
             body: formData,
         });

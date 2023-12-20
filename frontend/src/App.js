@@ -16,13 +16,13 @@ function App() {
   const [Products, setProducts] = useState([])
   const [CartProducts, setCartProducts] = useState([])
   const [query, setQuery] = useState('')
-  const { Logout } = useContext(AuthContext)
+  const { Logout ,api_host} = useContext(AuthContext)
   useEffect(() => {
     GetProducts('', '', 0)
   }, [])
   const GetProducts = async (...parameters) => {
     const [nameQuery, categoryQuery, priceQuery] = parameters
-    const response = await fetch(`http://localhost:8000/Products/?name=${nameQuery}&price=${priceQuery}&category=${categoryQuery}`, {
+    const response = await fetch(`${api_host}/Products/?name=${nameQuery}&price=${priceQuery}&category=${categoryQuery}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

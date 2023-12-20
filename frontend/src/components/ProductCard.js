@@ -4,14 +4,13 @@ import { Rating } from 'react-simple-star-rating'
 import AuthContext from '../context/AuthContext';
 import { toast } from 'react-toastify';
 function ProductCard({ product, CartProducts, setCartProducts }) {
-    const { User, Logout } = useContext(AuthContext)
+    const { User, Logout ,api_host} = useContext(AuthContext)
     const [rating, setRating] = useState(0)
-    const temp = 4
     useEffect(() => {
         GetRatings()
     }, [])
     const GetRatings = async () => {
-        const response = await fetch(`http://localhost:8000/Products/ratings/?product=${product.id}`, {
+        const response = await fetch(`${api_host}/Products/ratings/?product=${product.id}`, {
             method: 'GET',
         })
         const data = await response.json()
@@ -29,7 +28,7 @@ function ProductCard({ product, CartProducts, setCartProducts }) {
             });
             return
         }
-        const response = await fetch('http://localhost:8000/Cart/create/', {
+        const response = await fetch(`${api_host}/Cart/create/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -55,7 +54,7 @@ function ProductCard({ product, CartProducts, setCartProducts }) {
 
     }
     const handleRating = async (rate) => {
-        const response = await fetch('http://localhost:8000/Products/ratings/create/', {
+        const response = await fetch(`${api_host}/Products/ratings/create/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import AuthContext from '../context/AuthContext';
 import {
     MDBCard,
     MDBCardBody,
@@ -7,10 +8,12 @@ import {
     MDBBtn,
     MDBCardImage
 } from 'mdb-react-ui-kit';
+
 export default function CartProduct({ product, setCartProducts }) {
+    const { api_host } = useContext(AuthContext)
     const [quantity, setQuantity] = useState(product.quantity)
     const IncreaseQuantity = async () => {
-        const response = await fetch(`http://localhost:8000/Cart/${product.id}/`, {
+        const response = await fetch(`${api_host}/Cart/${product.id}/`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -24,7 +27,7 @@ export default function CartProduct({ product, setCartProducts }) {
         }
     };
     const DecreaseQuantity = async () => {
-        const response = await fetch(`http://localhost:8000/Cart/${product.id}/`, {
+        const response = await fetch(`${api_host}/Cart/${product.id}/`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -45,7 +48,7 @@ export default function CartProduct({ product, setCartProducts }) {
         }
     };
     const RemoveProductFromCart = async () => {
-        const response = await fetch(`http://localhost:8000/Cart/${product.id}/`, {
+        const response = await fetch(`${api_host}/Cart/${product.id}/`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${JSON.parse(localStorage.getItem('AccessToken'))}`

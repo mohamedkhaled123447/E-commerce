@@ -9,12 +9,12 @@ export const AuthProvider = ({ children }) => {
     const [RefreshToken, setRefreshToken] = useState(() => localStorage.getItem('RefreshToken') ? localStorage.getItem('RefreshToken') : null)
     const [User, setUser] = useState(() => localStorage.getItem('AccessToken') ? jwt_decode(localStorage.getItem('AccessToken')).user : null)
     const [error, setError] = useState('')
-
+    const api_host = process.env.REACT_APP_API_ROOT_URL || "http://localhost:8000"
     const Login = async (e) => {
         let response = null
         if (e.type === "submit") {
             e.preventDefault()
-            response = await fetch('http://localhost:8000/Accounts/api/token/', {
+            response = await fetch(`${api_host}/Accounts/api/token/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
                 body: JSON.stringify({ 'username': e.target.username.value, 'password': e.target.password.value })
             })
         } else {
-            response = await fetch('http://localhost:8000/Accounts/api/token/', {
+            response = await fetch(`${api_host}/Accounts/api/token/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
             if (e.type === "submit") {
                 setError('Invalid username or password')
             } else {
-                const response = await fetch('http://localhost:8000/Accounts/register/', {
+                const response = await fetch(`${api_host}/Accounts/register/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
         navigate('/login')
     }
     const UpdateToken = async () => {
-        const response = await fetch('http://localhost:8000/Accounts/api/token/refresh/', {
+        const response = await fetch(`${api_host}/Accounts/api/token/refresh/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -94,7 +94,8 @@ export const AuthProvider = ({ children }) => {
         Login: Login,
         Logout: Logout,
         User: User,
-        error: error
+        error: error,
+        api_host: api_host
     }
     return (
         <AuthContext.Provider value={ContextData}>

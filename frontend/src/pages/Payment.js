@@ -16,10 +16,10 @@ import React, { useContext } from "react";
 import AuthContext from "../context/AuthContext";
 
 export default function OrderDetails3({ CartProducts, setCartProducts }) {
-    const { User } = useContext(AuthContext)
+    const { User,api_host } = useContext(AuthContext)
     const total_price = CartProducts.reduce((total, product) => total + product.quantity * product.product.price, 0)
     const MakePaymentSession = async () => {
-        const response = await fetch('http://localhost:8000/Order/create-checkout-session/', {
+        const response = await fetch(`${api_host}/Order/create-checkout-session/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

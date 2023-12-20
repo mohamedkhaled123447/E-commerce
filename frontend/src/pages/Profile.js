@@ -19,14 +19,14 @@ import {
 } from 'mdb-react-ui-kit';
 
 export default function ProfilePage({ Products }) {
-  const { User } = useContext(AuthContext)
+  const { User ,api_host} = useContext(AuthContext)
   const [orders, setOrders] = useState([])
   const UserProducts = Products.filter((product) => product.seller === User.id)
   useEffect(() => {
     GetOrders()
   }, [])
   const GetOrders = async () => {
-    const response = await fetch('http://localhost:8000/Order/', {
+    const response = await fetch(`${api_host}/Order/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

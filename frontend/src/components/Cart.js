@@ -17,12 +17,12 @@ import {
 export default function Cart({ CartProducts, setCartProducts }) {
     const [topRightModal, setTopRightModal] = useState(false);
     const toggleOpen = () => setTopRightModal(!topRightModal);
-    const { User, Logout } = useContext(AuthContext)
+    const { User, Logout ,api_host} = useContext(AuthContext)
     useEffect(() => {
         GetCartProduct()
     }, [])
     const GetCartProduct = async () => {
-        const response = await fetch('http://localhost:8000/Cart/', {
+        const response = await fetch(`${api_host}/Cart/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

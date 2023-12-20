@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom'
+import AuthContext from "../context/AuthContext";
 import {
     MDBInput,
     MDBCol,
@@ -11,6 +12,7 @@ import {
 } from 'mdb-react-ui-kit';
 
 export default function App() {
+    const { api_host } = useContext(AuthContext)
     const navigate = useNavigate()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -23,7 +25,7 @@ export default function App() {
         else if (email === '') setError('Please enter email')
         else if (password === '') setError('Please enter password')
         else {
-            const response = await fetch('http://localhost:8000/Accounts/register/', {
+            const response = await fetch(`${api_host}/Accounts/register/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
