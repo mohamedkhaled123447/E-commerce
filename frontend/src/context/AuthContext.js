@@ -37,7 +37,10 @@ export const AuthProvider = ({ children }) => {
             setUser(jwt_decode(data.access).user)
             localStorage.setItem('AccessToken', JSON.stringify(data.access))
             localStorage.setItem('RefreshToken', JSON.stringify(data.refresh))
-            navigate('/')
+            if (jwt_decode(data.access).user.verified == true)
+                navigate('/')
+            else
+                navigate('/confirmemail')
         } else {
             if (e.type === "submit") {
                 setError('Invalid username or password')

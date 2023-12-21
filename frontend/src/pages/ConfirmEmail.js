@@ -3,10 +3,8 @@ import { MDBBtn, MDBIcon, MDBContainer, MDBRow, MDBCol } from 'mdb-react-ui-kit'
 import AuthContext from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import { gapi } from 'gapi-script';
-import { useNavigate } from 'react-router-dom';
 function ConfirmEmail() {
-    const { api_host, Logout, User, setUser } = useContext(AuthContext)
-    const navigate = useNavigate();
+    const { api_host, Logout } = useContext(AuthContext)
     const Params = new URLSearchParams(window.location.search)
     const verify = async () => {
         const res = await fetch(`${api_host}/Accounts/confirmemail/`, {
@@ -62,10 +60,12 @@ function ConfirmEmail() {
                 <MDBRow>
                     <MDBIcon fas icon="check-circle" size='10x' />
                 </MDBRow>
-                <MDBRow className='m-4 d-flex justify-content-center'>
-                    <MDBBtn onClick={verify} className='w-25 me-4'>verify</MDBBtn>
-                    <MDBBtn onClick={ResendCode} className='w-25'>Resend code</MDBBtn>
-                </MDBRow>
+                {Params.get('code') && (
+                    <MDBRow className='m-4 d-flex justify-content-center'>
+                        <MDBBtn onClick={verify} className='w-25 me-4'>verify</MDBBtn>
+                        <MDBBtn onClick={ResendCode} className='w-25'>Resend code</MDBBtn>
+                    </MDBRow>
+                )}
             </MDBContainer>
         </>
     )
