@@ -95,7 +95,8 @@ export const AuthProvider = ({ children }) => {
         Logout: Logout,
         User: User,
         error: error,
-        api_host: api_host
+        api_host: api_host,
+        setUser: setUser
     }
     return (
         <AuthContext.Provider value={ContextData}>

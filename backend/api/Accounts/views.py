@@ -5,6 +5,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import User
 from .serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
+import uuid
 from .tasks import SendEmail
 
 
@@ -24,7 +25,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 # Create your views here.
 class Home(APIView):
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         users = User.objects.all()
@@ -39,6 +40,24 @@ class RegisterUser(APIView):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            SendEmail.delay()
             return Response(serializer.data)
         return Response(serializer.errors)
+
+
+class ConfirmEmail(APIView):
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.data["id"])
+        if user.confirmation_code == request.data["code"]:
+            user.verified = True
+            user.save()
+            return Response({"message": "Email confirmed"}, status=200)
+        return Response({"message": "Email not confirmed"}, status=400)
+
+
+class SendVerificationEmail(APIView):
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.data["id"])
+        user.confirmation_code = uuid.uuid4()
+        user.save()
+        SendEmail.delay(user.id)
+        return Response({"message": "Email sent"}, status=200)

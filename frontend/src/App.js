@@ -6,6 +6,7 @@ import Register from './pages/Register'
 import Header from './components/Header'
 import Profile from './pages/Profile'
 import Payment from './pages/Payment';
+import ConfirmEmail from './pages/ConfirmEmail';
 import PrivateRoute from './utils/PrivateRoute'
 import AuthContext from './context/AuthContext';
 import { Route, Routes } from 'react-router-dom'
@@ -16,7 +17,7 @@ function App() {
   const [Products, setProducts] = useState([])
   const [CartProducts, setCartProducts] = useState([])
   const [query, setQuery] = useState('')
-  const { Logout ,api_host} = useContext(AuthContext)
+  const { Logout, api_host } = useContext(AuthContext)
   useEffect(() => {
     GetProducts('', '', 0)
   }, [])
@@ -53,6 +54,7 @@ function App() {
         />} path='/' />
         <Route element={<Login />} path='/login' />
         <Route element={<Register />} path='/register' />
+        <Route element={<ConfirmEmail />} path='/confirmemail' />
       </Routes>
       <ToastContainer autoClose={1000} />
     </div>

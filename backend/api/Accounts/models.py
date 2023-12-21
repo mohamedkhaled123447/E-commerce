@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+import uuid
 
 
 class User(AbstractUser):
@@ -12,5 +13,8 @@ class User(AbstractUser):
     ]
     role = models.CharField(max_length=10, choices=ROLES, default="customer")
     verified = models.BooleanField(default=False)
-    image = models.ImageField(upload_to="images/accounts/", blank=True, null=True)
+    image = models.ImageField(
+        upload_to="images/accounts/", blank=True, null=True, default="images/accounts/img_avatar.png"
+    )
     phone = models.CharField(max_length=20, default="")
+    confirmation_code = models.CharField(max_length=150, default=uuid.uuid4())
