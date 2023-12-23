@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { MDBBtn, MDBIcon, MDBContainer, MDBRow, MDBCol } from 'mdb-react-ui-kit'
 import AuthContext from '../context/AuthContext';
 import { toast } from 'react-toastify';
-import { gapi } from 'gapi-script';
+
 function ConfirmEmail() {
     const { api_host, Logout } = useContext(AuthContext)
     const Params = new URLSearchParams(window.location.search)
@@ -18,10 +18,7 @@ function ConfirmEmail() {
             })
         })
         if (res.status === 200) {
-            gapi.auth2.getAuthInstance().signOut().then(() => {
-                gapi.auth2.getAuthInstance().disconnect()
-                Logout()
-            })
+            Logout()
             toast.success("Email Verified", {
                 position: toast.POSITION.TOP_CENTER
             });

@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from "jwt-decode";
+import { gapi } from 'gapi-script';
 const AuthContext = createContext()
 export default AuthContext
 export const AuthProvider = ({ children }) => {
@@ -53,16 +54,20 @@ export const AuthProvider = ({ children }) => {
                     body: JSON.stringify({ 'username': e.profileObj.givenName, 'email': e.profileObj.email, 'password': "123456789" })
                 })
                 const data = await response.json()
-                if (response.status === 200) {
+                if (response.status === 201) {
                     Login(e)
                 } else {
                     setError('Error')
+                    console.log(response)
                 }
             }
         }
 
     }
     const Logout = () => {
+        gapi.auth2.getAuthInstance().signOut().then(() => {
+            gapi.auth2.getAuthInstance().disconnect()
+        })
         setUser(null)
         localStorage.removeItem('AccessToken')
         localStorage.removeItem('RefreshToken')
@@ -99,7 +104,6 @@ export const AuthProvider = ({ children }) => {
         User: User,
         error: error,
         api_host: api_host,
-        setUser: setUser
     }
     return (
         <AuthContext.Provider value={ContextData}>

@@ -1,7 +1,13 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.parsers import MultiPartParser
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import get_object_or_404
+from django.core.files.storage import default_storage
+from rest_framework import status
 from .models import User
 from .serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -24,24 +30,22 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 
 # Create your views here.
-class Home(APIView):
-    #permission_classes = [IsAuthenticated]
-
-    def get(self, request, *args, **kwargs):
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return Response(serializer.data)
+class GetAllUser(ListAPIView):
+    # permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
-class RegisterUser(APIView):
+class RegisterUser(ListCreateAPIView):
     permission_classes = [AllowAny]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-    def post(self, request, *arg, **kwargs):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
+
+class GetUser(RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class ConfirmEmail(APIView):
@@ -61,3 +65,20 @@ class SendVerificationEmail(APIView):
         user.save()
         SendEmail.delay(user.id)
         return Response({"message": "Email sent"}, status=200)
+
+
+class UpdateProfileImage(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = (MultiPartParser,)
+
+    def post(self, request, *args, **kwargs):
+        image_file = request.FILES.get("image")
+        user_id = request.user.id
+        user = get_object_or_404(User, id=user_id)
+        old_image = user.image
+        default_storage.delete(old_image.path)
+        user.image.save(image_file.name, image_file)
+        # Serialize the user object
+        serializer = UserSerializer(user)
+        # Return a success response with the serialized data
+        return Response(serializer.data, status=status.HTTP_200_OK)

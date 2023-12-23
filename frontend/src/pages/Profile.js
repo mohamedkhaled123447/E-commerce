@@ -17,9 +17,10 @@ import {
   MDBListGroup,
   MDBListGroupItem
 } from 'mdb-react-ui-kit';
+import UpdateProfilePage from '../components/UpdateProfilePage';
 
 export default function ProfilePage({ Products }) {
-  const { User ,api_host} = useContext(AuthContext)
+  const { User, api_host } = useContext(AuthContext)
   const [orders, setOrders] = useState([])
   const UserProducts = Products.filter((product) => product.seller === User.id)
   useEffect(() => {
@@ -56,8 +57,7 @@ export default function ProfilePage({ Products }) {
                   <p className="text-muted mb-1">Full Stack Developer</p>
                   <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
                   <div className="d-flex justify-content-center mb-2">
-                    <MDBBtn>Follow</MDBBtn>
-                    <MDBBtn outline className="ms-1">Message</MDBBtn>
+                    <UpdateProfilePage />
                   </div>
                 </MDBCardBody>
               </MDBCard>
