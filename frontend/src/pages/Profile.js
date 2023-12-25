@@ -8,18 +8,18 @@ import {
   MDBCardText,
   MDBCardBody,
   MDBCardImage,
-  MDBBtn,
   MDBBadge,
   MDBTable,
   MDBTableHead,
   MDBTableBody,
+  MDBBtn,
   MDBIcon,
-  MDBListGroup,
-  MDBListGroupItem
 } from 'mdb-react-ui-kit';
 import UpdateProfilePage from '../components/UpdateProfilePage';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProfilePage({ Products }) {
+  const navigate = useNavigate()
   const { User, api_host } = useContext(AuthContext)
   const [orders, setOrders] = useState([])
   const UserProducts = Products.filter((product) => product.seller === User.id)
@@ -54,8 +54,7 @@ export default function ProfilePage({ Products }) {
                     className="rounded-circle"
                     style={{ width: '150px', height: '150px' }}
                     fluid />
-                  <p className="text-muted mb-1">Full Stack Developer</p>
-                  <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                  <h2 className="text-muted mb-1">{User.username}</h2>
                   <div className="d-flex justify-content-center mb-2">
                     <UpdateProfilePage />
                   </div>
@@ -150,6 +149,11 @@ export default function ProfilePage({ Products }) {
                   ))}
                 </MDBTableBody>
               </MDBTable>
+              <MDBBtn className='mb-4' onClick={() => navigate('/addproduct')}>
+                Add product
+                <MDBIcon fas icon="plus" size='lg' />
+              </MDBBtn>
+
             </MDBRow>
             <MDBRow>
               <h1>Orders</h1>

@@ -3,9 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import AuthContext from "../context/AuthContext";
 import {
     MDBInput,
-    MDBCol,
-    MDBRow,
-    MDBCheckbox,
     MDBBtn,
     MDBIcon,
     MDBContainer
@@ -32,7 +29,6 @@ export default function App() {
                 },
                 body: JSON.stringify({ 'username': username, 'email': email, 'password': password })
             })
-            const data = await response.json()
             if (response.status === 200) {
                 navigate('/login')
             } else {
@@ -41,7 +37,7 @@ export default function App() {
         }
     }
     return (
-        <MDBContainer mt-4>
+        <MDBContainer className='mt-4'>
             <form onSubmit={Register}>
                 <MDBInput className='mb-4' type='username' label='Username' onChange={(e) => setUsername(e.target.value)} />
                 <MDBInput className='mb-4' type='email' label='Email address' onChange={(e) => setEmail(e.target.value)} />

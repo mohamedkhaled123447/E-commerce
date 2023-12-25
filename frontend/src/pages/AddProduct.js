@@ -6,7 +6,7 @@ import { MDBInput, MDBBtn, MDBContainer, MDBSpinner, MDBRow } from 'mdb-react-ui
 
 function AddProduct({ setProducts }) {
     const navigate = useNavigate();
-    const { User ,api_host} = useContext(AuthContext)
+    const { User, api_host } = useContext(AuthContext)
     const [name, setName] = useState('');
     const [Loading, setLoading] = useState(false);
     const [description, setDescription] = useState('');
@@ -41,7 +41,7 @@ function AddProduct({ setProducts }) {
     };
 
     return (
-        <MDBContainer>
+        <MDBContainer className='mt-4'>
             <form onSubmit={handleSubmit}>
                 <MDBInput
                     required
