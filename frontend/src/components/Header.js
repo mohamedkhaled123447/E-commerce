@@ -1,16 +1,21 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
-import Cart from './Cart';
 import AuthContext from '../context/AuthContext';
 import GoogleLogoutButton from './GoogleLogoutButton'
 import {
   MDBContainer,
   MDBNavbar,
+  MDBNavbarBrand,
+  MDBNavbarToggler,
   MDBIcon,
-  MDBBtn
+  MDBNavbarNav,
+  MDBNavbarItem,
+  MDBBtn,
+  MDBCollapse,
 } from 'mdb-react-ui-kit';
 
 export default function Header({ GetProducts, query, setQuery, CartProducts, setCartProducts }) {
+  const [openBasic, setOpenBasic] = useState(false);
   const navigate = useNavigate()
   const { User, Logout } = useContext(AuthContext)
   const handleSubmit = (e) => {
@@ -18,34 +23,53 @@ export default function Header({ GetProducts, query, setQuery, CartProducts, set
     GetProducts(query, '', 0)
   }
   return (
-    <MDBNavbar light bgColor='light' className='mb-4'>
+    <MDBNavbar expand='lg' light bgColor='light' >
       <MDBContainer fluid>
-        <a
-          className='navbar-brand'
-          href='/'
-          style={{ fontFamily: 'fantasy', fontSize: '1.5rem' }}
-        >E-commerce</a>
-        <form onSubmit={handleSubmit} className='d-flex w-auto'>
-          <input className='form-control' placeholder="Type query" aria-label="Search" type='Search' value={query} onChange={(e) => setQuery(e.target.value)} />
-          <MDBBtn type='submit' outline>Search</MDBBtn>
-        </form>
-        {!User && (
-          <div>
-            <MDBBtn onClick={() => navigate('/login')}>Login</MDBBtn>
-            <MDBBtn className="ms-2" onClick={() => navigate('/register')}>signup</MDBBtn>
-          </div>
-        )}
-        {User && (
-          <div className='d-flex flex-row mb-3 align-items-center'>
-            <span className='me-3'>Welcom </span>
-            <a className='me-4' href='http://localhost:3001/profile'>{User.username}</a>
-            <GoogleLogoutButton />
-            <Cart
-              CartProducts={CartProducts}
-              setCartProducts={setCartProducts}
-            />
-          </div>
-        )}
+        <MDBNavbarBrand href='/'>E-commerce</MDBNavbarBrand>
+
+        <MDBNavbarToggler
+          aria-controls='navbarSupportedContent'
+          aria-expanded='false'
+          aria-label='Toggle navigation'
+          onClick={() => setOpenBasic(!openBasic)}
+        >
+          <MDBIcon icon='bars' fas />
+        </MDBNavbarToggler>
+
+        <MDBCollapse navbar show={openBasic}>
+          <form onSubmit={handleSubmit} className='d-flex w-100 '>
+            <input className='form-control' placeholder="Type query" aria-label="Search" type='Search' value={query} onChange={(e) => setQuery(e.target.value)} />
+            <MDBBtn type='submit' outline>Search</MDBBtn>
+          </form>
+          <MDBNavbarNav className='mr-auto mb-2 mb-lg-0'>
+            {!User && (
+              <MDBNavbarItem className='m-1'>
+                <MDBBtn onClick={() => navigate('/login')}>Login</MDBBtn>
+              </MDBNavbarItem>
+            )}
+            {!User && (
+              <MDBNavbarItem className='m-1'>
+                <MDBBtn className="ms-2" onClick={() => navigate('/register')}>signup</MDBBtn>
+              </MDBNavbarItem>
+            )}
+            {User && (
+              <MDBNavbarItem className='m-1'>
+                <a href='/profile'>{User.username}</a>
+              </MDBNavbarItem>
+            )}
+            {User && (
+              <MDBNavbarItem className='m-1'>
+                <MDBIcon fas icon="shopping-cart" size='2x' className="ms-2" onClick={() => navigate('/cart')} />
+              </MDBNavbarItem>
+            )}
+            {User && (
+              <MDBNavbarItem className='m-1'>
+                <GoogleLogoutButton />
+              </MDBNavbarItem>
+            )}
+
+          </MDBNavbarNav>
+        </MDBCollapse>
       </MDBContainer>
     </MDBNavbar>
   );
