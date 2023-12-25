@@ -59,7 +59,7 @@ export default function CartProduct({ product, setCartProducts }) {
 
     }
     return (
-        <MDBCard className='mt-4' border="secondary" >
+        <MDBCard className='m-3' border="secondary" style={{ maxWidth: '15rem', minWidth: "15rem" }} >
             <MDBCardImage src={product.product.image} position='top' alt='...' />
             <MDBCardBody>
                 <MDBCardTitle>{product.product.name}</MDBCardTitle>

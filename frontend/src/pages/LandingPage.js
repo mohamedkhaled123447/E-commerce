@@ -23,17 +23,16 @@ function LandingPage({ Products, GetProducts, query, CartProducts, setCartProduc
                     </MDBCol>
                 </MDBRow>
                 <MDBRow>
-                    <MDBCol size='2'>
-                        <FilterSection GetProducts={GetProducts} query={query} />
-                    </MDBCol>
+
                     <MDBCol>
-                        <MDBRow className='g-3'>
+                        <div className="d-flex flex-row mb-3 flex-wrap">
+                            <div style={{ maxWidth: '15rem' }}>
+                                <FilterSection GetProducts={GetProducts} query={query} />
+                            </div>
                             {currentItems.map(product => (
-                                <div className="col-md-4" key={product.id}>
-                                    <ProductCard product={product} CartProducts={CartProducts} setCartProducts={setCartProducts} />
-                                </div>
+                                <ProductCard key={product.id} product={product} CartProducts={CartProducts} setCartProducts={setCartProducts} />
                             ))}
-                        </MDBRow>
+                        </div>
                         <MDBRow className='mt-3'>
                             <ReactPaginate
                                 breakLabel="..."

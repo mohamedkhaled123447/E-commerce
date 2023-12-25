@@ -4,7 +4,7 @@ import { Rating } from 'react-simple-star-rating'
 import AuthContext from '../context/AuthContext';
 import { toast } from 'react-toastify';
 function ProductCard({ product, CartProducts, setCartProducts }) {
-    const { User, Logout ,api_host} = useContext(AuthContext)
+    const { User, Logout, api_host } = useContext(AuthContext)
     const [rating, setRating] = useState(0)
     useEffect(() => {
         GetRatings()
@@ -68,7 +68,7 @@ function ProductCard({ product, CartProducts, setCartProducts }) {
         }
     }
     return (
-        <MDBCard style={{ maxWidth: '22rem', minWidth: "200px" }}>
+        <MDBCard className='m-3' style={{ maxWidth: '15rem', minWidth: "15rem" }}>
             <MDBCardImage src={product.image} alt={product.name} position='top' style={{ height: "150px" }} />
             <MDBCardBody>
                 <MDBCardTitle>{product.name}</MDBCardTitle>
