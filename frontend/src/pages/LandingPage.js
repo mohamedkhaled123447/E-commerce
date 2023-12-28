@@ -15,7 +15,7 @@ function LandingPage({ Products, GetProducts, query, CartProducts, setCartProduc
     };
     return (
         <>
-            <MDBContainer className="text-center mt-5">
+            <div className="p-4">
                 <MDBRow className='mb-3'>
                     <MDBCol>
                         <h1>Welcome to Our E-commerce Store</h1>
@@ -23,12 +23,14 @@ function LandingPage({ Products, GetProducts, query, CartProducts, setCartProduc
                     </MDBCol>
                 </MDBRow>
                 <MDBRow>
-
+                    <MDBCol size='2'>
+                        <div style={{ maxWidth: '15rem' }}>
+                            <FilterSection GetProducts={GetProducts} query={query} />
+                        </div>
+                    </MDBCol>
                     <MDBCol>
                         <div className="d-flex flex-row mb-3 flex-wrap">
-                            <div style={{ maxWidth: '15rem' }}>
-                                <FilterSection GetProducts={GetProducts} query={query} />
-                            </div>
+
                             {currentItems.map(product => (
                                 <ProductCard key={product.id} product={product} CartProducts={CartProducts} setCartProducts={setCartProducts} />
                             ))}
@@ -51,7 +53,7 @@ function LandingPage({ Products, GetProducts, query, CartProducts, setCartProduc
                         </MDBRow>
                     </MDBCol>
                 </MDBRow>
-            </MDBContainer>
+            </div>
         </>
     );
 }

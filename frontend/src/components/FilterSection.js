@@ -72,11 +72,11 @@ function FilterSection({ GetProducts, query }) {
         />
       </MDBRow>
       <MDBRow className="mt-3">
-        <MDBBtn className="w-50" color="primary" onClick={handleApply}>
+        <MDBBtn className="" color="primary" onClick={handleApply}>
           Apply
         </MDBBtn>
         <MDBBtn
-          className="w-50"
+          className=""
           color="secondary"
           onClick={() => {
             setChecked(0)
